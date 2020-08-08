@@ -1,3 +1,2 @@
-# CustomDatePicker
+# Custom iOS 14 DatePicker
 
-A description of this package.
