@@ -83,7 +83,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var monthSelector: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(named: "chevron_forward", in: Bundle(for: CalendarView.self), compatibleWith: nil)!, for: .normal)
+        button.setBackgroundImage(UIImage(named: "chevron_forward", in: Bundle(for: CalendarView.self), compatibleWith: nil), for: .normal)
         button.addTarget(self, action: #selector(showAndHideMonthPicker), for: .touchUpInside)
         button.tintColor = tintColor
         return button
