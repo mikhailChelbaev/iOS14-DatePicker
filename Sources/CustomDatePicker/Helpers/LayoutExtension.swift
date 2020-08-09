@@ -10,14 +10,14 @@ import UIKit
 // ---------------------------------------------------------------------------------------------
 // struct to store view's constraints
 
-public struct AnchoredConstraints {
+struct AnchoredConstraints {
     public var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
 }
 
 // ---------------------------------------------------------------------------------------------
 // extension to facilitate autolayout usage
 
-public extension UIView {
+extension UIView {
     
     /// anchor to neighbours
     /// - Parameters:
