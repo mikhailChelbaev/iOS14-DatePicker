@@ -100,7 +100,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var previousMonth: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(named: "chevron.backward"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "chevron.backward"), for: .normal)
         button.addTarget(self, action: #selector(showMonth), for: .touchUpInside)
         button.tintColor = tintColor
         button.accessibilityLabel = "previous month"
