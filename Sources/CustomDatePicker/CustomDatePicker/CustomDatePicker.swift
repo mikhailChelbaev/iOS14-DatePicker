@@ -83,7 +83,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var monthSelector: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(named: "chevron.forward", in: Bundle(for: CalendarView.self), compatibleWith: nil)!, for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "chevron.forward"), for: .normal)
         button.addTarget(self, action: #selector(showAndHideMonthPicker), for: .touchUpInside)
         button.tintColor = tintColor
         return button
@@ -91,7 +91,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var nextMonth: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(named: "chevron.forward", in: Bundle(for: CalendarView.self), compatibleWith: nil), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "chevron.forward"), for: .normal)
         button.addTarget(self, action: #selector(showMonth), for: .touchUpInside)
         button.tintColor = tintColor
         button.accessibilityLabel = "next month"
@@ -100,7 +100,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var previousMonth: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(named: "chevron.backward", in: Bundle(for: CalendarView.self), compatibleWith: nil), for: .normal)
+        button.setBackgroundImage(UIImage(named: "chevron.backward"), for: .normal)
         button.addTarget(self, action: #selector(showMonth), for: .touchUpInside)
         button.tintColor = tintColor
         button.accessibilityLabel = "previous month"
