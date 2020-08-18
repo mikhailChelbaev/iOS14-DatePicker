@@ -87,11 +87,11 @@ extension MonthView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? DateCell,
-           cell.style != .empty {
-            cell.select()
-            datePickerDelegate?.date = cell.cellDate!
-        }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DateCell,
+              cell.style != .empty else { return }
+        cell.select()
+        datePickerDelegate?.date = cell.cellDate!
+        
         if let selectedCellIndex = datePickerDelegate?.selectedCellIndex,
            selectedCellIndex.page == page,
            selectedCellIndex.item != indexPath.item,
