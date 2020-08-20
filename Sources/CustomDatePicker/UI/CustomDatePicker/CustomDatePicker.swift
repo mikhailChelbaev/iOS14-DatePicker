@@ -251,6 +251,8 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
             self.monthPicker.isHidden.toggle()
             self.nextMonth.isHidden.toggle()
             self.previousMonth.isHidden.toggle()
+            self.calendarView.isHidden.toggle()
+            self.weekdaysView.isHidden.toggle()
         }
 
     }
