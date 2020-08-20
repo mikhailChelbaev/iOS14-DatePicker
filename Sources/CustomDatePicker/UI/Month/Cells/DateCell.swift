@@ -1,10 +1,3 @@
-//
-//  DateCell.swift
-//  DPicker
-//
-//  Created by Mikhail on 17.07.2020.
-//
-
 import UIKit
 
 enum DateCellStyle: Equatable {
@@ -14,6 +7,8 @@ enum DateCellStyle: Equatable {
 class DateCell: UICollectionViewCell {
     
     private let calendar = Calendar.current
+    
+    var cellIndex: (page: Int, item: Int) = (0, 0)
     
     var style: DateCellStyle! {
         didSet {
@@ -47,10 +42,15 @@ class DateCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         anchorItems()
+        setupNotifications()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func layoutSubviews() {
@@ -64,7 +64,7 @@ class DateCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         dateLabel.text = ""
-        dateLabel.textColor = .customLabel
+        dateLabel.textColor = .label
         dateLabel.font = .systemFont(ofSize: 20, weight: .regular)
         view.backgroundColor = .customBackground
     }
@@ -75,6 +75,11 @@ class DateCell: UICollectionViewCell {
         
         view.addSubview(dateLabel)
         dateLabel.anchorToCenter(parent: view)
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(checkSelectNotification), name: .select, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkDeselectNotification), name: .deselect, object: nil)
     }
     
     private func isToday() -> Bool {
@@ -93,9 +98,29 @@ class DateCell: UICollectionViewCell {
     func deselect() {
         if style == .empty { return }
         let flag = isToday()
-        dateLabel.textColor = flag ? pickerTintColor : .customLabel
+        dateLabel.textColor = flag ? pickerTintColor : .label
         dateLabel.font = .systemFont(ofSize: 20, weight: .regular)
         view.backgroundColor = .customBackground
+    }
+    
+    // MARK: - notification handlers
+    
+    @objc private func checkSelectNotification(_ notification: Notification) {
+        if let page = notification.userInfo?["page"] as? Int,
+           let item = notification.userInfo?["item"] as? Int,
+           cellIndex.page == page,
+           cellIndex.item == item {
+            select()
+        }
+    }
+    
+    @objc private func checkDeselectNotification(_ notification: Notification) {
+        if let page = notification.userInfo?["page"] as? Int,
+           let item = notification.userInfo?["item"] as? Int,
+           cellIndex.page == page,
+           cellIndex.item == item {
+            deselect()
+        }
     }
     
 }

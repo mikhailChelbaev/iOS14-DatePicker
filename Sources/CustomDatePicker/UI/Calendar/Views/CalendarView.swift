@@ -1,10 +1,3 @@
-//
-//  CalendarView.swift
-//  DPicker
-//
-//  Created by Mikhail on 19.07.2020.
-//
-
 import SwiftUI
 
 class CalendarView: UICollectionView {
@@ -18,8 +11,6 @@ class CalendarView: UICollectionView {
     private let cellsInfo: [(type: AnyClass, id: String)] = [
         (type: CalendarCell.self, id: "CalendarCell")
     ]
-    
-    private var shouldSkipComponentsAssignemnt = true
     
     // MARK: - override fields
     
@@ -48,7 +39,7 @@ class CalendarView: UICollectionView {
     private func setupCollectionView() {
         dataSource = self
         delegate = self
-        backgroundColor = .clear
+        backgroundColor = .systemBackground
         showsHorizontalScrollIndicator = false
         isPagingEnabled = true
         
@@ -61,15 +52,14 @@ class CalendarView: UICollectionView {
         if let dpDelegate = datePickerDelegate {
             let cellNum = (components.year! - dpDelegate.minimumDate.year!) * 12 + components.month!
             DispatchQueue.main.async {
-                self.shouldSkipComponentsAssignemnt = true
                 self.scrollToItem(at: IndexPath(row: cellNum, section: 0), at: .centeredHorizontally, animated: animated)
             }
         }
     }
     
     func scrollToCurrentMonth(animated: Bool = false) {
-        if let dpDelegate = datePickerDelegate {
-            scrollToMonth(dpDelegate.currentComponents, animated: animated)
+        if let components = datePickerDelegate?.currentComponents {
+            scrollToMonth(components, animated: animated)
         }
     }
     
@@ -121,12 +111,10 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
         if position > cell.frame.size.width / 2 {
            index.row = index.row + 1
         }
-        if !shouldSkipComponentsAssignemnt,
-           let components = getDateComponents(for: index),
-           datePickerDelegate?.currentComponents != components {
+        
+        if isDragging, let components = getDateComponents(for: index) {
             datePickerDelegate?.currentComponents = components
         }
-        shouldSkipComponentsAssignemnt = false
     }
     
 }

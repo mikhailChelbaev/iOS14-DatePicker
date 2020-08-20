@@ -1,10 +1,3 @@
-//
-//  CalendarCell.swift
-//  DPicker
-//
-//  Created by Mikhail on 19.07.2020.
-//
-
 import UIKit
 
 class CalendarCell: UICollectionViewCell {

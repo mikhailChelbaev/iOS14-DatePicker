@@ -1,10 +1,3 @@
-//
-//  WeekdaysView.swift
-//  DPicker
-//
-//  Created by Mikhail on 30.07.2020.
-//
-
 import UIKit
 
 class WeekdaysView: UICollectionView {

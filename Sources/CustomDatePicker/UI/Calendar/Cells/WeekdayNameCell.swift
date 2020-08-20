@@ -1,10 +1,3 @@
-//
-//  WeekdayNameCell.swift
-//  DPicker
-//
-//  Created by Mikhail on 18.07.2020.
-//
-
 import UIKit
 
 class WeekDayNameCell: UICollectionViewCell {

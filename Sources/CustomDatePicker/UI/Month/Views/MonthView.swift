@@ -1,10 +1,3 @@
-//
-//  MonthView.swift
-//  DPicker
-//
-//  Created by Mikhail on 17.07.2020.
-//
-
 import SwiftUI
 
 class MonthView: UICollectionView {
@@ -55,7 +48,7 @@ class MonthView: UICollectionView {
         layout.minimumInteritemSpacing = 0
         super.init(frame: .zero, collectionViewLayout: layout)
         
-        backgroundColor = .clear
+        backgroundColor = .systemBackground
         
         registerCells()
         delegate = self
@@ -89,18 +82,7 @@ extension MonthView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? DateCell,
               cell.style != .empty else { return }
-        cell.select()
         datePickerDelegate?.date = cell.cellDate!
-        
-        if let selectedCellIndex = datePickerDelegate?.selectedCellIndex,
-           selectedCellIndex.page == page,
-           selectedCellIndex.item != indexPath.item,
-           let cell = collectionView.cellForItem(at: IndexPath(item: selectedCellIndex.item, section: 0)) as? DateCell {
-            cell.deselect()
-            if cell.style != .empty {
-                datePickerDelegate?.date = cell.cellDate!
-            }
-        }
         datePickerDelegate?.selectedCellIndex = (page: page, item: indexPath.item)
     }
     
@@ -117,6 +99,7 @@ extension MonthView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? DateCell {
             cell.pickerTintColor = datePickerDelegate?.tintColor
+            cell.cellIndex = (page, indexPath.item)
             
             if indexPath.item % 7 + 1 == weekday && calendar.component(.month, from: currentDay) == dateComponents.month {
                 cell.style = .date(currentDay)

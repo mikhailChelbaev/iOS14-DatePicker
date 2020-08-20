@@ -1,10 +1,3 @@
-//
-//  MonthPickerView.swift
-//  DPicker
-//
-//  Created by Mikhail on 31.07.2020.
-//
-
 import UIKit
 
 class MonthPickerView: UIView {

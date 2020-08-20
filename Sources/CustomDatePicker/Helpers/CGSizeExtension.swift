@@ -1,10 +1,3 @@
-//
-//  CGSizeExtension.swift
-//  DPicker
-//
-//  Created by Mikhail on 22.07.2020.
-//
-
 import UIKit
 
 extension CGSize {

@@ -1,10 +1,3 @@
-//
-//  ExpandedButton.swift
-//  DPicker
-//
-//  Created by Mikhail on 07.08.2020.
-//
-
 import UIKit
 
 fileprivate extension UIEdgeInsets {
