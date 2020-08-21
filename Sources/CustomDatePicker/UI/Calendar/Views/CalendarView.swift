@@ -39,7 +39,7 @@ class CalendarView: UICollectionView {
     private func setupCollectionView() {
         dataSource = self
         delegate = self
-        backgroundColor = .systemBackground
+        backgroundColor = .customBackground
         showsHorizontalScrollIndicator = false
         isPagingEnabled = true
         

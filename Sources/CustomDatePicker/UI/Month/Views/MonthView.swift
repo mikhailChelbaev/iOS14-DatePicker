@@ -48,7 +48,7 @@ class MonthView: UICollectionView {
         layout.minimumInteritemSpacing = 0
         super.init(frame: .zero, collectionViewLayout: layout)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .customBackground
         
         registerCells()
         delegate = self
