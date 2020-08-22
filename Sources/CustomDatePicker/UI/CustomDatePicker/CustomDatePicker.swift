@@ -238,7 +238,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     }
     
     @objc private func showAndHideMonthPicker() {
-        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve) {
+        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve, animations: {
             if self.monthPicker.isHidden {
                 self.monthSelector.transform = CGAffineTransform(rotationAngle: .pi / 2)
                 self.monthAndYear.setTitleColor(self.tintColor, for: .normal)
@@ -253,7 +253,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
             self.previousMonth.isHidden.toggle()
             self.calendarView.isHidden.toggle()
             self.weekdaysView.isHidden.toggle()
-        }
+        })
 
     }
     
