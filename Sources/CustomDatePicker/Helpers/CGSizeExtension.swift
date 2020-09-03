@@ -6,7 +6,7 @@ extension CGSize {
     
     static func calculateDateCellSize(bounds: CGRect? = nil, numberOfWeeks: Int = 5) -> CGSize {
         let viewWidth = bounds?.size.width ?? .defaultWidth
-        let width = viewWidth / 7
+        let width = viewWidth / 7 - 1
         let height = width * CGFloat(5) / CGFloat(numberOfWeeks)
         return .init(width: width, height: height)
     }
@@ -26,7 +26,7 @@ extension CGSize {
     
     static func calculateWeekdayCellSize(bounds: CGRect? = nil) -> CGSize {
         let viewWidth = bounds?.size.width ?? .defaultWidth
-        let width = viewWidth / 7
+        let width = viewWidth / 7 - 1
         return .init(width: width, height: .weekdayCellHeight)
     }
     

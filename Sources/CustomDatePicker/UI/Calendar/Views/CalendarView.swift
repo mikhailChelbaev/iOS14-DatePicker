@@ -52,7 +52,8 @@ class CalendarView: UICollectionView {
         if let dpDelegate = datePickerDelegate {
             let cellNum = (components.year! - dpDelegate.minimumDate.year!) * 12 + components.month!
             DispatchQueue.main.async {
-                self.scrollToItem(at: IndexPath(row: cellNum, section: 0), at: .centeredHorizontally, animated: animated)
+                let width = self.datePickerDelegate?.bounds.width ?? 0
+                self.setContentOffset(.init(x: CGFloat(cellNum) * width, y: 0), animated: animated)
             }
         }
     }
