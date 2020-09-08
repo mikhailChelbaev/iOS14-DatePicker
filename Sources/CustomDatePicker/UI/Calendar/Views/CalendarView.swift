@@ -107,7 +107,7 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         var indexes = self.indexPathsForVisibleItems
         indexes.sort()
-        var index = indexes.first!
+        guard var index = indexes.first else { return }
         let cell = self.cellForItem(at: index)!
         let position = self.contentOffset.x - cell.frame.origin.x
         if position > cell.frame.size.width / 2 {
