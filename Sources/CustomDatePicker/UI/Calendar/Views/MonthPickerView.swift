@@ -65,7 +65,7 @@ extension MonthPickerView: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            return Calendar.current.monthSymbols[row]
+            return datePickerDelegate?.calendar.standaloneMonthSymbols[row] ?? ""
         } else {
             if let delegate = datePickerDelegate {
                 return "\(delegate.minimumDate.year! + row)"
