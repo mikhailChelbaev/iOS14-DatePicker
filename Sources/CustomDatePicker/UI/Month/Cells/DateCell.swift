@@ -43,6 +43,7 @@ class DateCell: UICollectionViewCell {
         super.init(frame: frame)
         anchorItems()
         setupNotifications()
+        clipsToBounds = false
     }
     
     required init?(coder: NSCoder) {
@@ -55,10 +56,9 @@ class DateCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        view.layer.cornerRadius = (min(bounds.size.width, bounds.size.height) - 2) / 2
-        let side = min(bounds.size.width, bounds.size.height)
-        viewConstraints?.width?.constant = side - 1
-        viewConstraints?.height?.constant = side - 1
+        view.layer.cornerRadius = bounds.width / 2
+        viewConstraints?.width?.constant = bounds.width
+        viewConstraints?.height?.constant = bounds.width
     }
     
     override func prepareForReuse() {

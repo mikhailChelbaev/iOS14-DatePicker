@@ -15,7 +15,7 @@ extension CGSize {
         let width = bounds?.size.width ?? .defaultWidth
         var height: CGFloat!
         if let bounds = bounds {
-            height = bounds.size.height - .weekdayCellHeight - .monthButtonHeight
+            height = CGSize.calculateDateCellSize(bounds: bounds).height * 5
         } else {
             height = CGSize.calculateDateCellSize().height * 5
         }

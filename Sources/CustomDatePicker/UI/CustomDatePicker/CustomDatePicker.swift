@@ -107,8 +107,9 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     // MARK: - override fields
     
     public override var intrinsicContentSize: CGSize {
-        let monthViewSize = CGSize.calculateMonthViewSize()
-        return .init(width: monthViewSize.width, height: monthViewSize.height + .weekdayCellHeight + .monthButtonHeight)
+        layoutIfNeeded()
+        let monthViewSize = CGSize.calculateMonthViewSize(bounds: bounds)
+        return .init(width: monthViewSize.width, height: monthViewSize.height + .weekdayCellHeight + .monthButtonHeight + .bottomOffset)
     }
     
     // MARK: - init
@@ -153,9 +154,13 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     // MARK: - internal methods
     
+    private var firstUpdate = true
     public override func layoutSubviews() {
         super.layoutSubviews()
-        anchorItems()
+        if firstUpdate {
+            anchorItems()
+        }
+        firstUpdate = false
     }
     
     // MARK: - private methods
@@ -169,16 +174,18 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
         monthSelector.centerYAnchor.constraint(equalTo: monthAndYear.centerYAnchor).isActive = true
         
         addSubview(nextMonth)
-        nextMonth.anchor(top: topAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 10), size: .init(width: 14, height: 23))
+        nextMonth.anchor(trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 10), size: .init(width: 14, height: 23))
         
         addSubview(previousMonth)
-        previousMonth.anchor(top: topAnchor, trailing: nextMonth.leadingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 29), size: .init(width: 14, height: 23))
+        previousMonth.anchor(trailing: nextMonth.leadingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 29), size: .init(width: 14, height: 23))
+        [nextMonth, previousMonth].forEach( {$0.centerYAnchor.constraint(equalTo: monthAndYear.centerYAnchor).isActive = true })
         
         addSubview(weekdaysView)
         weekdaysView.anchor(top: topAnchor, leading: leadingAnchor, trailing: trailingAnchor, padding: .init(top: .monthButtonHeight, left: 0, bottom: 0, right: 0), size: .init(width: bounds.size.width, height: .weekdayCellHeight))
         
+        let monthViewSize: CGSize = .calculateMonthViewSize(bounds: bounds)
         addSubview(calendarView)
-        calendarView.anchor(top: weekdaysView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, size: .calculateMonthViewSize(bounds: bounds))
+        calendarView.anchor(top: weekdaysView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, size: .init(width: monthViewSize.width, height: monthViewSize.height + .bottomOffset))
         
         addSubview(monthPicker)
         monthPicker.anchor(top: weekdaysView.topAnchor, leading: leadingAnchor, bottom: calendarView.bottomAnchor, trailing: trailingAnchor)
@@ -238,7 +245,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     }
     
     @objc private func showAndHideMonthPicker() {
-        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve) {
             if self.monthPicker.isHidden {
                 self.monthSelector.transform = CGAffineTransform(rotationAngle: .pi / 2)
                 self.monthAndYear.setTitleColor(self.tintColor, for: .normal)
@@ -253,7 +260,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
             self.previousMonth.isHidden.toggle()
             self.calendarView.isHidden.toggle()
             self.weekdaysView.isHidden.toggle()
-        })
+        }
 
     }
     
