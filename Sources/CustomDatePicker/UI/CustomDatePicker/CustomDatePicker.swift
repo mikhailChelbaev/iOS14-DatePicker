@@ -102,7 +102,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var nextMonth: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(systemName: "chevron.forward"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.addTarget(self, action: #selector(showMonth), for: .touchUpInside)
         button.tintColor = tintColor
         button.tag = 0
@@ -111,7 +111,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     private lazy var previousMonth: ExpandedButton = {
         let button = ExpandedButton()
-        button.setBackgroundImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        button.setBackgroundImage(UIImage(systemName: "chevron.left"), for: .normal)
         button.addTarget(self, action: #selector(showMonth), for: .touchUpInside)
         button.tintColor = tintColor
         button.tag = 1
