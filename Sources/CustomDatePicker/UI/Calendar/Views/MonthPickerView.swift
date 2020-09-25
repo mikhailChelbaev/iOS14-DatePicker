@@ -15,6 +15,7 @@ class MonthPickerView: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = .clear
+        clipsToBounds = true
         
         monthPicker.dataSource = self
         monthPicker.delegate = self

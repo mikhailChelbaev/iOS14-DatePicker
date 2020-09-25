@@ -1,3 +1,10 @@
+//
+//  CustomDatePicker.swift
+//  DPicker
+//
+//  Created by Mikhail on 23.07.2020.
+//
+
 import UIKit
 
 protocol CustomDatePickerDelegate: class {
@@ -43,6 +50,7 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     var currentComponents: DateComponents {
         didSet {
             setMonthAndYear()
+            checkDate()
         }
     }
     
@@ -61,6 +69,12 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
             updateLocale()
         }
     }
+    
+    // MARK: - private properties
+    
+    private var minimumYear: Int
+    
+    private var maximumYear: Int
     
     // MARK: - ui elements
     
@@ -114,23 +128,42 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     // MARK: - init
     
-    public override init(frame: CGRect) {
-        date = Date()
-        calendar = Calendar.current
+    public init(minimumYear: Int = 1900,
+                maximumYear: Int = 2100,
+                date: Date = Date(),
+                calendar: Calendar = Calendar.current,
+                locale: Locale = Locale.autoupdatingCurrent) {
+        self.date = date
+        self.calendar = calendar
+        
+        self.minimumYear = minimumYear
+        self.maximumYear = maximumYear
+        if self.minimumYear > self.maximumYear {
+            swap(&self.minimumYear, &self.maximumYear)
+        }
+        self.maximumYear = maximumYear > 2100 ? 2100 : maximumYear
+        self.maximumYear = maximumYear < 1900 ? 1900 : maximumYear
+        maximumDate = DateComponents(year: self.maximumYear, month: 12)
+        self.minimumYear = minimumYear > 2100 ? 2100 : minimumYear
+        self.minimumYear = minimumYear < 1900 ? 1900 : minimumYear
+        minimumDate = DateComponents(year: self.minimumYear, month: 1)
+        
+        self.locale = locale
+        self.calendar.locale = locale
+        
         currentComponents = calendar.dateComponents([.month, .year], from: date)
-        minimumDate = DateComponents(year: 1900, month: 1)
-        maximumDate = DateComponents(year: 2100, month: 12)
-        numberOfCells = (maximumDate.year! - minimumDate.year! + 1) * 12
+        numberOfCells = (maximumDate.year! - minimumDate.year! + 1) * 12 + 1
         
         // calculation selected cell index
-        let components = calendar.dateComponents([.month, .year], from: date)
-        let page = (components.year! - minimumDate.year!) * 12 + components.month!
-        let firstDay = calendar.date(from: components)
-        let weekday = calendar.component(.weekday, from: firstDay!)
-        let item = weekday + calendar.component(.day, from: date) - 2
+        let components = self.calendar.dateComponents([.month, .year], from: date)
+        let page = (components.year! - self.minimumDate.year!) * 12 + components.month!
+        let firstDay = self.calendar.date(from: components)
+        var weekday = (self.calendar.component(.weekday, from: firstDay!) - self.calendar.firstWeekday + 1) % 7
+        weekday = weekday == 0 ? 7 : weekday
+        let item = weekday + self.calendar.component(.day, from: date) - 2
         selectedCellIndex = (page, item)
         
-        super.init(frame: frame)
+        super.init(frame: .init(x: 0, y: 0, width: 300, height: 300))
         
         tintColor = .systemBlue
         monthPicker.isHidden = true
@@ -212,6 +245,11 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
         selectedCellIndex = (page: page, item: item)
     }
     
+    private func checkDate() {
+        previousMonth.isEnabled = currentComponents != minimumDate
+        nextMonth.isEnabled = currentComponents != maximumDate
+    }
+    
     // MARK: - update
     
     private func updateCalendarPages(oldSelectedCellIndex: (page: Int, item: Int),
@@ -236,12 +274,6 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
         let nextMonth = calendar.date(byAdding: .month, value: value, to: date)
         currentComponents = calendar.dateComponents([.month, .year], from: nextMonth!)
         calendarView.scrollToCurrentMonth(animated: true)
-    }
-    
-    @objc private func showPreviousMonth() {
-        if let ip = calendarView.indexPath(for: calendarView.visibleCells[0]) {
-            calendarView.scrollToItem(at: IndexPath(item: ip.item - 1, section: ip.section), at: .centeredHorizontally, animated: true)
-        }
     }
     
     @objc private func showAndHideMonthPicker() {
