@@ -128,9 +128,9 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     
     // MARK: - init
     
-    public init(minimumYear: Int = 1900,
+    public init(date: Date = Date(),
+                minimumYear: Int = 1900,
                 maximumYear: Int = 2100,
-                date: Date = Date(),
                 calendar: Calendar = Calendar.current,
                 locale: Locale = Locale.autoupdatingCurrent) {
         self.date = date
@@ -183,6 +183,37 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
         currentComponents = calendar.dateComponents([.month, .year], from: date)
         calculateCellIndex()
         calendarView.scrollToCurrentMonth(animated: true)
+    }
+    
+    public func hideMonthAndYearPicker() {
+        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve) {
+            self.monthSelector.transform = .identity
+            self.monthAndYear.setTitleColor(.label, for: .normal)
+            self.calendarView.scrollToCurrentMonth()
+            self.monthPicker.isHidden = true
+            self.nextMonth.isHidden = false
+            self.previousMonth.isHidden = false
+            self.calendarView.isHidden = false
+            self.weekdaysView.isHidden = false
+        }
+    }
+    
+    public func showMonthAndYearPicker() {
+        UIView.transition(with: self, duration: 0.3, options: .transitionCrossDissolve) {
+            self.monthSelector.transform = CGAffineTransform(rotationAngle: .pi / 2)
+            self.monthAndYear.setTitleColor(self.tintColor, for: .normal)
+            self.monthPicker.selectRows()
+            self.monthPicker.isHidden = false
+            self.nextMonth.isHidden = true
+            self.previousMonth.isHidden = true
+            self.calendarView.isHidden = true
+            self.weekdaysView.isHidden = true
+        }
+    }
+    
+    public func scrollToDate(date: Date? = nil, animated: Bool = true) {
+        let components = calendar.dateComponents([.month, .year], from: date ?? self.date)
+        calendarView.scrollToMonth(components, animated: animated)
     }
     
     // MARK: - internal methods
