@@ -212,8 +212,8 @@ public class CustomDatePicker: UIView, CustomDatePickerDelegate {
     }
     
     public func scrollToDate(date: Date? = nil, animated: Bool = true) {
-        let components = calendar.dateComponents([.month, .year], from: date ?? self.date)
-        calendarView.scrollToMonth(components, animated: animated)
+        currentComponents = calendar.dateComponents([.month, .year], from: date ?? self.date)
+        calendarView.scrollToCurrentMonth(animated: animated)
     }
     
     // MARK: - internal methods
