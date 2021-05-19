@@ -97,21 +97,17 @@ class CalendarDayCell: UICollectionViewCell, CalendarDay {
     private func updateUI() {
         switch state {
         case .none:
-            dateLabel.text = " "
-            view.isHidden = true
+            break
         case .disabled:
-            dateLabel.text = "\(date?.day ?? 0)"
             dateLabel.textColor = .secondaryLabel.withAlphaComponent(0.2)
-            view.isHidden = true
         case .enabled:
-            dateLabel.text = "\(date?.day ?? 0)"
-            dateLabel.textColor = .label
-            view.isHidden = true
+            dateLabel.textColor = date == .today ? config?.color : .label
         case .selected:
-            dateLabel.text = "\(date?.day ?? 0)"
-            dateLabel.textColor = config?.color ?? .systemBlue
-            view.isHidden = false
+            dateLabel.textColor = config?.color
         }
+        view.isHidden = state != .selected
+        dateLabel.text = state == .none ? " " : "\(date?.day ?? 0)"
+        dateLabel.font = state == .selected ? .systemFont(ofSize: 20, weight: .semibold) : .systemFont(ofSize: 20)
     }
     
 }
