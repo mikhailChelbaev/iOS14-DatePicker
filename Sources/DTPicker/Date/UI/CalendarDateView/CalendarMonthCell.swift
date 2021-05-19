@@ -99,7 +99,7 @@ extension CalendarMonthCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarDay, let date = cell.date {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarDay, let date = cell.date, date >= data.minDate, date <= data.maxDate {
             datePickerDelegate?.dateDidChanged(to: date.toDate())
         }
     }
