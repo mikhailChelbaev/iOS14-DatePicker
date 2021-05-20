@@ -94,7 +94,7 @@ extension CalendarMonthCell: UICollectionViewDataSource {
 extension CalendarMonthCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = bounds.width / 7
+        let width = round(bounds.width / 7)
         let height = bounds.height / CGFloat(date.numberOfWeeks)
         return .init(width: width, height: height)
     }
