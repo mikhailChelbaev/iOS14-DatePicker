@@ -89,9 +89,6 @@ public class DTPicker: UIView, DatePickerProtocol {
         calendarView.mediator = self
         calendarView.datePickerDelegate = self
         monthYearSelectorView.mediator = self
-        
-        let config = Config(color: .red, font: UIFont.systemFont(ofSize: 17, weight: .semibold), calendar: Calendar.current)
-        [headerView, calendarView, monthYearSelectorView].forEach({ $0.updateConfig(new: config) })
     }
     
     public func updateConfigurator(_ newConfigurator: CalendarConfigurator) {

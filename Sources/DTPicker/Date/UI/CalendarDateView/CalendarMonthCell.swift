@@ -25,6 +25,7 @@ class CalendarMonthCell: UICollectionViewCell, CalendarMonth {
         layout.minimumInteritemSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
+        cv.isScrollEnabled = false
         return cv
     }()
     
