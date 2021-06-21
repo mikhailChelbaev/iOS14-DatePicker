@@ -5,7 +5,7 @@ protocol DPCalendar: ConfigurableView {
     var datePickerDelegate: __DatePickerDelegate? { set get }
     
     func setCalendarData(_ data: CalendarData)
-    func scrollToMonth(_ date: CDate)
+    func scrollToMonth(_ date: CDate, animated: Bool)
 }
 
 class CalendarView: UIView, DPCalendar {
@@ -68,11 +68,13 @@ class CalendarView: UIView, DPCalendar {
         numberOfMonths = data.minDate.numberOfMonths(to: data.maxDate)
         
         collectionView.reloadData()
+        
+        scrollToMonth(data.selectedDate)
     }
     
-    func scrollToMonth(_ date: CDate) {
+    func scrollToMonth(_ date: CDate, animated: Bool = true) {
         guard let ip = indexPath(for: date) else { return }
-        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: true)
+        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: animated)
         mediator?.didChangeMonth(date)
     }
     
@@ -88,7 +90,7 @@ class CalendarView: UIView, DPCalendar {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        scrollToMonth(data.selectedDate)
+        scrollToMonth(data.selectedDate, animated: false)
     }
     
 }

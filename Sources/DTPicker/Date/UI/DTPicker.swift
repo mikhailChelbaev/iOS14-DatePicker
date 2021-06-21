@@ -28,7 +28,7 @@ protocol MonthChangeMediator: AnyObject {
     func didChangeMonth(_ newMonth: CDate)
 }
 
-public class DTPicker: UIView, DatePickerProtocol {
+public class DatePicker: UIView, DatePickerProtocol {
     
     private(set) public var configurator: CalendarConfigurator
     
@@ -64,6 +64,30 @@ public class DTPicker: UIView, DatePickerProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func updateConfigurator(_ newConfigurator: CalendarConfigurator) {
+        var config = newConfigurator
+        config.calendar.locale = config.locale
+        
+        configurator = config
+        
+        let calendarData: CalendarData = getCalendarData()
+        calendarView.setCalendarData(calendarData)
+        monthYearSelectorView.setCalendarData(calendarData)
+        headerView.setCalendarData(calendarData)
+        
+        let headerConfig = Config(color: config.tintColor, font: config.monthFont, calendar: config.calendar)
+        headerView.updateConfig(new: headerConfig)
+        
+        let weekdaysConfig = Config(color: config.tintColor, font: config.weekdaysFont, calendar: config.calendar)
+        weekdaysView.updateConfig(new: weekdaysConfig)
+        
+        let calendarConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 20), calendar: config.calendar)
+        calendarView.updateConfig(new: calendarConfig)
+        
+        let monthYearPickerConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 22), calendar: config.calendar)
+        monthYearSelectorView.updateConfig(new: monthYearPickerConfig)
+    }
+    
     private func commonInit() {
         addSubview(headerView)
         headerView.stickToSuperviewEdges([.left, .top, .right], insets: .init(top: 8, left: 0, bottom: 0, right: 0))
@@ -91,30 +115,6 @@ public class DTPicker: UIView, DatePickerProtocol {
         monthYearSelectorView.mediator = self
     }
     
-    public func updateConfigurator(_ newConfigurator: CalendarConfigurator) {
-        var config = newConfigurator
-        config.calendar.locale = config.locale
-        
-        configurator = config
-        
-        let calendarData: CalendarData = getCalendarData()
-        calendarView.setCalendarData(calendarData)
-        monthYearSelectorView.setCalendarData(calendarData)
-        headerView.setCalendarData(calendarData)
-        
-        let headerConfig = Config(color: config.tintColor, font: config.monthFont, calendar: config.calendar)
-        headerView.updateConfig(new: headerConfig)
-        
-        let weekdaysConfig = Config(color: config.tintColor, font: config.weekdaysFont, calendar: config.calendar)
-        weekdaysView.updateConfig(new: weekdaysConfig)
-        
-        let calendarConfig = Config(color: config.tintColor, font: config.dateFont, calendar: config.calendar)
-        calendarView.updateConfig(new: calendarConfig)
-        
-        let monthYearPickerConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 22), calendar: config.calendar)
-        monthYearSelectorView.updateConfig(new: monthYearPickerConfig)
-    }
-    
     private func getCalendarData() -> CalendarData {
         let calendar = configurator.calendar
         let minDate = configurator.minimumDate.cdate(calendar: calendar)
@@ -126,10 +126,10 @@ public class DTPicker: UIView, DatePickerProtocol {
     
 }
 
-extension DTPicker: MonthChangeMediator {
+extension DatePicker: MonthChangeMediator {
     
     func requestMonthChangeAnimation(to month: CDate) {
-        calendarView.scrollToMonth(month)
+        calendarView.scrollToMonth(month, animated: true)
     }
     
     func didChangeMonth(_ newMonth: CDate) {
@@ -143,7 +143,7 @@ extension DTPicker: MonthChangeMediator {
     
 }
 
-extension DTPicker: ShowMonthYearPickerDelegate {
+extension DatePicker: ShowMonthYearPickerDelegate {
     
     private enum MonthYearPickerState {
         case visible, hidden
@@ -174,7 +174,7 @@ extension DTPicker: ShowMonthYearPickerDelegate {
     
 }
 
-extension DTPicker: __DatePickerDelegate {
+extension DatePicker: __DatePickerDelegate {
     
     func dateDidChanged(to newDate: Date) {
         configurator.date = newDate
