@@ -28,7 +28,7 @@ protocol MonthChangeMediator: AnyObject {
     func didChangeMonth(_ newMonth: CDate)
 }
 
-public class DTPicker: UIView, DatePickerProtocol {
+public class DatePicker: UIView, DatePickerProtocol {
     
     private(set) public var configurator: CalendarConfigurator
     
@@ -81,7 +81,7 @@ public class DTPicker: UIView, DatePickerProtocol {
         let weekdaysConfig = Config(color: config.tintColor, font: config.weekdaysFont, calendar: config.calendar)
         weekdaysView.updateConfig(new: weekdaysConfig)
         
-        let calendarConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 20), calendar: config.calendar)
+        let calendarConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 20), calendar: config.calendar, showCurrentDay: config.showCurrentDay)
         calendarView.updateConfig(new: calendarConfig)
         
         let monthYearPickerConfig = Config(color: config.tintColor, font: .systemFont(ofSize: 22), calendar: config.calendar)
@@ -119,14 +119,16 @@ public class DTPicker: UIView, DatePickerProtocol {
         let calendar = configurator.calendar
         let minDate = configurator.minimumDate.cdate(calendar: calendar)
         let maxDate = configurator.maximumDate.cdate(calendar: calendar)
-        var selectedDate = configurator.date.cdate(calendar: calendar)
-        selectedDate = max(min(selectedDate, maxDate), minDate)
+        var selectedDate = configurator.date?.cdate(calendar: calendar)
+        if let date = selectedDate {
+            selectedDate = max(min(date, maxDate), minDate)
+        }
         return CalendarData(minDate: minDate, maxDate: maxDate, selectedDate: selectedDate)
     }
     
 }
 
-extension DTPicker: MonthChangeMediator {
+extension DatePicker: MonthChangeMediator {
     
     func requestMonthChangeAnimation(to month: CDate) {
         calendarView.scrollToMonth(month, animated: true)
@@ -143,7 +145,7 @@ extension DTPicker: MonthChangeMediator {
     
 }
 
-extension DTPicker: ShowMonthYearPickerDelegate {
+extension DatePicker: ShowMonthYearPickerDelegate {
     
     private enum MonthYearPickerState {
         case visible, hidden
@@ -174,7 +176,7 @@ extension DTPicker: ShowMonthYearPickerDelegate {
     
 }
 
-extension DTPicker: __DatePickerDelegate {
+extension DatePicker: __DatePickerDelegate {
     
     func dateDidChanged(to newDate: Date) {
         configurator.date = newDate

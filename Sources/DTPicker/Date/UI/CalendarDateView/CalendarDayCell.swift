@@ -101,7 +101,7 @@ class CalendarDayCell: UICollectionViewCell, CalendarDay {
         case .disabled:
             dateLabel.textColor = UIColor.secondaryLabel.withAlphaComponent(0.2)
         case .enabled:
-            dateLabel.textColor = date == .today ? config?.color : .label
+            dateLabel.textColor = (date == .today && config?.showCurrentDay == true) ? config?.color : .label
         case .selected:
             dateLabel.textColor = config?.color
         }

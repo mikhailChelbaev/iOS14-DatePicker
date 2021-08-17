@@ -11,9 +11,9 @@ class CalendarMonthCell: UICollectionViewCell, CalendarMonth {
     
     var date: CDate
     
-    weak var datePickerDelegate: __DatePickerDelegate?
-    
     var config: DTConfig?
+    
+    weak var datePickerDelegate: __DatePickerDelegate?
     
     private var data: CalendarData
     

@@ -29,7 +29,7 @@ class CalendarHeaderView: UIView, CalendarHeader {
         return formatter
     }()
     
-    init() {        
+    init() {
         showYearPickerView = ShowYearPickerView()
         changeMonthButtons = ChangeMonthButtonsView()
         data = .default
@@ -68,26 +68,26 @@ class CalendarHeaderView: UIView, CalendarHeader {
     
     func setCalendarData(_ data: CalendarData) {
         self.data = data
-        showYearPickerView.setTitleText(formatter.string(from: data.selectedDate.toDate()))
-        changeMonthButtons.previousMonth.isEnabled = !compareMonths(data.selectedDate, data.minDate)
-        changeMonthButtons.nextMonth.isEnabled = !compareMonths(data.selectedDate, data.maxDate)
+        showYearPickerView.setTitleText(formatter.string(from: data.selectedDateOrToday.toDate()))
+        changeMonthButtons.previousMonth.isEnabled = !isMonthsEqual(data.selectedDateOrToday, data.minDate)
+        changeMonthButtons.nextMonth.isEnabled = !isMonthsEqual(data.selectedDateOrToday, data.maxDate)
     }
     
-    func compareMonths(_ left: CDate, _ right: CDate) -> Bool {
+    func isMonthsEqual(_ left: CDate, _ right: CDate) -> Bool {
         return left.month == right.month && left.year == right.year
     }
-       
+    
 }
 
 extension CalendarHeaderView: ChangeMonthDelegate {
     
     func showPreviousMonth() {
-        let month = data.selectedDate.addingMonths(-1)
+        let month = data.selectedDateOrToday.addingMonths(-1)
         mediator?.requestMonthChangeAnimation(to: month)
     }
     
     func showNextMonth() {
-        let month = data.selectedDate.addingMonths(1)
+        let month = data.selectedDateOrToday.addingMonths(1)
         mediator?.requestMonthChangeAnimation(to: month)
     }
     

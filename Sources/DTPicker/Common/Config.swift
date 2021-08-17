@@ -12,10 +12,12 @@ protocol DTConfig {
     var color: UIColor { get }
     var font: UIFont { get }
     var calendar: Calendar { get }
+    var showCurrentDay: Bool { get }
 }
 
 struct Config: DTConfig {
     var color: UIColor
     var font: UIFont
-    var calendar: Calendar 
+    var calendar: Calendar
+    var showCurrentDay: Bool = true
 }

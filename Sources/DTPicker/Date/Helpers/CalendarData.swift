@@ -6,7 +6,11 @@ struct CalendarData {
     
     var maxDate: CDate
     
-    var selectedDate: CDate
+    var selectedDate: CDate?
+    
+    var selectedDateOrToday: CDate {
+        selectedDate ?? .today
+    }
     
     static let `default`: CalendarData = .init(
         minDate: .today,

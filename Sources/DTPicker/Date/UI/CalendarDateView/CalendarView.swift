@@ -69,7 +69,7 @@ class CalendarView: UIView, DPCalendar {
         
         collectionView.reloadData()
         
-        scrollToMonth(data.selectedDate)
+        scrollToMonth(data.selectedDateOrToday)
     }
     
     func scrollToMonth(_ date: CDate, animated: Bool = true) {
@@ -90,7 +90,7 @@ class CalendarView: UIView, DPCalendar {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        scrollToMonth(data.selectedDate, animated: false)
+        scrollToMonth(data.selectedDateOrToday, animated: false)
     }
     
 }
