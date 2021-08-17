@@ -28,7 +28,7 @@ protocol MonthChangeMediator: AnyObject {
     func didChangeMonth(_ newMonth: CDate)
 }
 
-public class DatePicker: UIView, DatePickerProtocol {
+public class DTPicker: UIView, DatePickerProtocol {
     
     private(set) public var configurator: CalendarConfigurator
     
@@ -128,7 +128,7 @@ public class DatePicker: UIView, DatePickerProtocol {
     
 }
 
-extension DatePicker: MonthChangeMediator {
+extension DTPicker: MonthChangeMediator {
     
     func requestMonthChangeAnimation(to month: CDate) {
         calendarView.scrollToMonth(month, animated: true)
@@ -145,7 +145,7 @@ extension DatePicker: MonthChangeMediator {
     
 }
 
-extension DatePicker: ShowMonthYearPickerDelegate {
+extension DTPicker: ShowMonthYearPickerDelegate {
     
     private enum MonthYearPickerState {
         case visible, hidden
@@ -176,7 +176,7 @@ extension DatePicker: ShowMonthYearPickerDelegate {
     
 }
 
-extension DatePicker: __DatePickerDelegate {
+extension DTPicker: __DatePickerDelegate {
     
     func dateDidChanged(to newDate: Date) {
         configurator.date = newDate
